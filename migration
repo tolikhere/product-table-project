@@ -1,0 +1,51 @@
+#!/usr/bin/env php
+<?php
+
+require_once './autoloader.php';
+
+use App\DotEnv;
+use App\Database;
+
+
+(new DotEnv('.env'))->load();
+
+$dbName = $_ENV['DB_DATABASE'];
+
+$conn = (new Database(
+    $_ENV['DB_DRIVER'],
+    $_ENV['DB_HOST'],
+    $dbName,
+    $_ENV['DB_USER'],
+    $_ENV['DB_PASS']
+))->getConnection();
+
+
+$query = "USE {$dbName}";
+$conn->exec($query);
+
+$query = "DROP TABLE IF EXISTS Products";
+
+if ($conn->exec($query) !== false) {
+    echo 'Table Products was deleted successfully!' . PHP_EOL;
+}  else {
+    echo 'Something went wrong!' . PHP_EOL;
+}
+
+$query = 'CREATE TABLE Products (
+    PRODUCT_ID INT AUTO_INCREMENT,
+    PRODUCT_NAME VARCHAR(255) NOT NULL,
+    PRODUCT_PRICE DECIMAL(10, 2) NOT NULL,
+    PRODUCT_ARTICLE VARCHAR(32) NOT NULL,
+    PRODUCT_QUANTITY INT DEFAULT 0 NOT NULL,
+    DATE_CREATE DATETIME DEFAULT NOW() NOT NULL,
+    IS_HIDDEN   BOOLEAN  DEFAULT FALSE NOT NULL,
+    PRIMARY KEY (PRODUCT_ID)
+)';
+
+if ($conn->exec($query) !== false) {
+    echo 'Table Products was created successfully!' . PHP_EOL;
+} else {
+    echo 'Something went wrong!' . PHP_EOL;
+}
+
+

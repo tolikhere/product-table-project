@@ -1,0 +1,83 @@
+table {
+    margin: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+caption {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: left;
+    color: #333;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+thead {
+    background-color: #333;
+    color: white;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2%;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+tbody th {
+    background-color: #36c;
+    color: #fff;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) th {
+    background-color: #25c;
+}
+
+.hideProduct {
+    display: none;
+}
+
+.plus-minus {
+    float: right;
+}
+
+.plus-minus > button {
+    width: 2em;
+    margin: 0 3px 0;
+}
+.pagination {
+    display: inline-block;
+    margin-left: 30%;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+select {
+    padding: 8px 16px;
+    margin-left: 15em;
+}

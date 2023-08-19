@@ -1,6 +1,15 @@
 #!/usr/bin/env php
 <?php
 
+echo "Table 'Products' will be dropped and created again with new data.
+Are you sure you want to continue (Y/n)? ";
+$input = strtolower(trim(fgets(STDIN)));
+
+if (! in_array($input, ['', 'y', 'yes'])) {
+    exit;
+}
+
+
 require_once './autoloader.php';
 
 use App\DotEnv;
@@ -9,19 +18,16 @@ use App\Database;
 
 (new DotEnv('.env'))->load();
 
-$dbName = $_ENV['DB_DATABASE'];
 
 $conn = (new Database(
     $_ENV['DB_DRIVER'],
     $_ENV['DB_HOST'],
-    $dbName,
+    $_ENV['DB_DATABASE'],
     $_ENV['DB_USER'],
     $_ENV['DB_PASS']
 ))->getConnection();
 
 
-$query = "USE {$dbName}";
-$conn->exec($query);
 
 $query = "DROP TABLE IF EXISTS Products";
 
@@ -32,15 +38,15 @@ if ($conn->exec($query) !== false) {
 }
 
 $query = 'CREATE TABLE Products (
-    PRODUCT_ID INT AUTO_INCREMENT,
+    PRODUCT_ID INT UNSIGNED AUTO_INCREMENT,
     PRODUCT_NAME VARCHAR(255) NOT NULL,
-    PRODUCT_PRICE DECIMAL(10, 2) NOT NULL,
+    PRODUCT_PRICE DECIMAL(10, 2) UNSIGNED NOT NULL,
     PRODUCT_ARTICLE VARCHAR(32) NOT NULL,
-    PRODUCT_QUANTITY INT DEFAULT 0 NOT NULL,
+    PRODUCT_QUANTITY INT UNSIGNED DEFAULT 0 NOT NULL,
     DATE_CREATE DATETIME DEFAULT NOW() NOT NULL,
     IS_HIDDEN   BOOLEAN  DEFAULT FALSE NOT NULL,
     PRIMARY KEY (PRODUCT_ID)
-)';
+) ENGINE=InnoDB';
 
 if ($conn->exec($query) !== false) {
     echo 'Table Products was created successfully!' . PHP_EOL;
@@ -48,4 +54,6 @@ if ($conn->exec($query) !== false) {
     echo 'Something went wrong!' . PHP_EOL;
 }
 
+require_once __DIR__ . '/fixtures.php';
 
+echo 'Data for table Products was inserted successfully!' . PHP_EOL;

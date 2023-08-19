@@ -18,7 +18,7 @@ class Database
 
     public function getConnection(): \PDO
     {
-        $dsn = "{$this->driver}:{$this->host};dbname={$this->dbName}";
+        $dsn = "{$this->driver}:host={$this->host};dbname={$this->dbName}";
 
         $defaultOpts = [
             \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
@@ -28,8 +28,8 @@ class Database
 
         try {
             $conn = new \PDO($dsn, $this->user, $this->password, $this->opts ?? $defaultOpts);
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage(), (int) $e->getCode());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int) $e->getCode());
         }
 
         return $conn;
